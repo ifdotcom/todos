@@ -1,0 +1,16 @@
+.input-search {
+  color: #222;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  width: 400px;
+  height: 60px;
+  border: none;
+  border-radius: 25px;
+  background: #ededed;
+  box-shadow: inset 6px 6px 4px #dadada, inset -6px -6px 4px #ffffff24;
+}
+
+.input-search:focus {
+  border: 1px solid #dadada;
+}

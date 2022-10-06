@@ -1,0 +1,14 @@
+.todos {
+  margin: 15px;
+}
+
+.todos li {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  background: #875ea2;
+  border-radius: 20px;
+  color: #f3f3f3;
+  margin-top: 31px;
+}

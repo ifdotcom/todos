@@ -1,0 +1,17 @@
+.todo-button {
+  width: 80px;
+  height: 80px;
+  color: #73329e;
+  font-size: 36px;
+  font-weight: 900;
+  text-align: center;
+  align-content: center;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: linear-gradient(225deg, #ffffff, #dbdbdb);
+  box-shadow: 0 5px 9px #b4b4b4, 5px 0 9px #ffffff;
+  border: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
