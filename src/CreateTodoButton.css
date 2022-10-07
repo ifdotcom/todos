@@ -15,3 +15,6 @@
   bottom: 24px;
   right: 24px;
 }
+.todo-button:hover {
+  cursor: pointer;
+}

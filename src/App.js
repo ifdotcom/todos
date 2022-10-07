@@ -8,25 +8,41 @@ import { TodoItem } from "./TodoItem";
 // import logo from "./logo.svg";
 // import "./App.css";
 
-const todos = [
+const defaultTodos = [
   { text: "Cortar Cebolla", completed: true },
+  { text: "Dormir", completed: true },
   {
     text: "Tomar curso de React en Platzi para poder avanzar con el programa ",
-    completed: false,
+    completed: true,
   },
-  { text: "Cenar", completed: false },
-  { text: "Ver travestis", completed: false },
-  { text: "Ver series", completed: false },
-  { text: "Leer", completed: false },
-  { text: "Dormir", completed: false },
 ];
 
 // los componentes empiezan con mayúscula
 // La funciones de los componenten no reciben parametros, si no propiedades
 function App() {
+  // creamos el estado
+  const [searchValue, setSearchName] = React.useState("");
+  const [todos, setTodos] = React.useState(defaultTodos);
+
+  // mostrar el total de TODOs
+  const completedTodos = todos.filter((todo) => todo.completed === true).length;
+  const totalTodos = todos.length;
+
+  // mostrar todos buscados
+
+  let searchedTodos = [];
+
+  if (searchValue >= 1) {
+    searchedTodos = todos;
+  } else {
+    searchedTodos = todos.filter((todo) => {
+      const todoText = todo.text.toLowerCase();
+      const searchText = searchValue.toLowerCase();
+      return todoText.includes(searchText);
+    });
+  }
+
   return (
-    // Solo se puede enviar una etiqueta por componente, este seria React.Fragment
-    // en JSX se llaman elementos, no etiquetas
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />
@@ -46,12 +62,18 @@ function App() {
     //     </a>
     //   </header>
     // </div>
+
+    // Solo se puede enviar una etiqueta por componente, este seria React.Fragment
     // React.Fragment tambien se puede suplir con etiquetas vacias <> </>
     <>
-      <TodoCounter />
-      <TodoSearch />
+      <TodoCounter total={totalTodos} completed={completedTodos} />
+      <TodoSearch
+        // mandamos como props el estado
+        searchValue={searchValue}
+        setSearchName={setSearchName}
+      />
       <TodoList>
-        {todos.map((todo) => (
+        {searchedTodos.map((todo) => (
           // para iterar listas es importante porporcionar un a key por elemento, recomendable escribir ID
           <TodoItem
             key={todo.text}

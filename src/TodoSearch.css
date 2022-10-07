@@ -12,5 +12,5 @@
 }
 
 .input-search:focus {
-  border: 1px solid #dadada;
+  outline: #875ea2 solid 3px;
 }
