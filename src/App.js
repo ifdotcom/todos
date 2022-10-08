@@ -10,10 +10,10 @@ import { TodoItem } from "./TodoItem";
 
 const defaultTodos = [
   { text: "Cortar Cebolla", completed: true },
-  { text: "Dormir", completed: true },
+  { text: "Dormir", completed: false },
   {
     text: "Tomar curso de React en Platzi para poder avanzar con el programa ",
-    completed: true,
+    completed: false,
   },
 ];
 
@@ -32,7 +32,7 @@ function App() {
 
   let searchedTodos = [];
 
-  if (searchValue >= 1) {
+  if (!searchValue >= 1) {
     searchedTodos = todos;
   } else {
     searchedTodos = todos.filter((todo) => {
@@ -41,6 +41,34 @@ function App() {
       return todoText.includes(searchText);
     });
   }
+
+  // completar todo
+  const completeTodo = (text) => {
+    // Buscar indice
+    const todoIndex = todos.findIndex((todo) => todo.text === text);
+    // copia del array original
+    const newTodos = [...todos];
+    // cambiar la propiedad completed a true
+    newTodos[todoIndex].completed = true;
+
+    // mandar al estado el nuevo array
+
+    setTodos(newTodos);
+  };
+
+  // eliminar todo
+  const deleteTodo = (text) => {
+    // Buscar indice
+    const todoIndex = todos.findIndex((todo) => todo.text === text);
+    // copia del array original
+    const newTodos = [...todos];
+    // cortar el todo
+    newTodos.splice(todoIndex, 1);
+
+    // mandar al estado el nuevo array
+
+    setTodos(newTodos);
+  };
 
   return (
     // <div className="App">
@@ -79,6 +107,8 @@ function App() {
             key={todo.text}
             text={todo.text}
             completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={() => deleteTodo(todo.text)}
           />
         ))}
       </TodoList>

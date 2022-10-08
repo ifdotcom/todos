@@ -1,5 +1,6 @@
 .todos {
   margin: 15px;
+  width: 300px;
 }
 
 .todos li {
@@ -11,4 +12,5 @@
   border-radius: 20px;
   color: #f3f3f3;
   margin-top: 31px;
+  width: 100%;
 }
