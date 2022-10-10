@@ -1,18 +1,15 @@
 import React from "react";
-import { CreateTodoButton } from "./CreateTodoButton";
-import { TodoCounter } from "./TodoCounter";
-import { TodoList } from "./TodoList";
-import { TodoSearch } from "./TodoSearch";
-import { TodoItem } from "./TodoItem";
+
+import { AppUI } from "./AppUI";
 
 // import logo from "./logo.svg";
 // import "./App.css";
 
 const defaultTodos = [
-  { text: "Cortar Cebolla", completed: true },
-  { text: "Dormir", completed: false },
+  { text: "Desayunar", completed: true },
+  { text: "Ver TV", completed: false },
   {
-    text: "Tomar curso de React en Platzi para poder avanzar con el programa ",
+    text: "Cenar",
     completed: false,
   },
 ];
@@ -71,49 +68,15 @@ function App() {
   };
 
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    // <p>
-    //   Edit <code>src/App.js</code> and save to reload.
-    // </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    /* Para mandar llamar las propiedades del componente: */
-    /* {props.saludo} */
-    /* o tambien podemos llamar a children si el componente tiene elementos dentro de las etiquetas */
-    //       {props.children}
-    //     </a>
-    //   </header>
-    // </div>
-
-    // Solo se puede enviar una etiqueta por componente, este seria React.Fragment
-    // React.Fragment tambien se puede suplir con etiquetas vacias <> </>
-    <>
-      <TodoCounter total={totalTodos} completed={completedTodos} />
-      <TodoSearch
-        // mandamos como props el estado
-        searchValue={searchValue}
-        setSearchName={setSearchName}
-      />
-      <TodoList>
-        {searchedTodos.map((todo) => (
-          // para iterar listas es importante porporcionar un a key por elemento, recomendable escribir ID
-          <TodoItem
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}
-            onComplete={() => completeTodo(todo.text)}
-            onDelete={() => deleteTodo(todo.text)}
-          />
-        ))}
-      </TodoList>
-      <CreateTodoButton />
-    </>
+    <AppUI
+      totalTodos={totalTodos}
+      completedTodos={completedTodos}
+      searchValue={searchValue}
+      setSearchName={setSearchName}
+      searchedTodos={searchedTodos}
+      completeTodo={completeTodo}
+      deleteTodo={deleteTodo}
+    />
   );
 }
 
