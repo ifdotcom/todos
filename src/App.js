@@ -17,38 +17,70 @@ import { AppUI } from "./AppUI";
 // Custom Hook
 // Recibimos como parámetros el nombre y el estado inicial de nuestro item.
 function useLocalStorage(itemName, initialValue) {
-  // localStorage
-  // Guardamos nuestro item en una constante
-  const localStorageItem = localStorage.getItem(itemName);
-  let parsedItem;
+  // creamos el estado inicial para nuestros errores y carga
+  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [item, setItem] = React.useState(initialValue);
 
-  // validar si existen datos en localStorage
-  if (!localStorageItem) {
-    // si no existen datos, crear un array inicial
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    // el estado por defecto será un array vacío
-    parsedItem = initialValue;
-  } else {
-    // si existen elementos, convertir a los datos de localStorage a array de JS
-    parsedItem = JSON.parse(localStorageItem);
-  }
-  // creamos el estado, el estado recibe el array de objetos
-  const [item, setItem] = React.useState(parsedItem);
+  React.useEffect(() => {
+    // Simulamos un segundo de delay de carga
+    setTimeout(() => {
+      // Manejamos la tarea dentro de un try/catch por si ocurre algún error
+      try {
+        // localStorage
+        // Guardamos nuestro item en una constante
+        const localStorageItem = localStorage.getItem(itemName);
+        let parsedItem;
 
-  // persistencia de datos en localStorage
+        // validar si existen datos en localStorage
+        if (!localStorageItem) {
+          // si no existen datos, crear un array inicial
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          // el estado por defecto será un array vacío
+          parsedItem = initialValue;
+        } else {
+          // si existen elementos, convertir a los datos de localStorage a array de JS
+          parsedItem = JSON.parse(localStorageItem);
+        }
+        setItem(parsedItem);
+        setLoading(false);
+      } catch (error) {
+        // En caso de un error lo guardamos en el estado
+        setError(error);
+      }
+    }, 3000);
+  });
+
+  // persistencia de datos en localStorage, actulizar localStorage
   const saveItem = (newTodos) => {
-    const stringifiedTodos = JSON.stringify(newTodos);
-    localStorage.setItem(itemName, stringifiedTodos);
-    setItem(newTodos);
+    // Manejamos la tarea dentro de un try/catch por si ocurre algún error
+    try {
+      const stringifiedTodos = JSON.stringify(newTodos);
+      localStorage.setItem(itemName, stringifiedTodos);
+      setItem(newTodos);
+    } catch (error) {
+      setError(error);
+    }
   };
-  return [item, saveItem];
+  // Para tener un mejor control de los datos retornados, podemos regresarlos dentro de un objeto
+  return {
+    item,
+    saveItem,
+    loading,
+    error,
+  };
 }
 
 // los componentes empiezan con mayúscula
 // La funciones de los componenten no reciben parametros, si no propiedades
 function App() {
   // Desestructuramos los datos que retornamos de nuestro custom hook, y le pasamos los argumentos que necesitamos (nombre y estado inicial)
-  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
+  const {
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_V1", []);
   const [searchValue, setSearchName] = React.useState("");
 
   // mostrar el total de TODOs
@@ -99,6 +131,8 @@ function App() {
 
   return (
     <AppUI
+      loading={loading}
+      error={error}
       totalTodos={totalTodos}
       completedTodos={completedTodos}
       searchValue={searchValue}

@@ -6,6 +6,8 @@ import { TodoSearch } from "./components/TodoSearch/TodoSearch";
 import { TodoItem } from "./components/TodoItem/TodoItem";
 
 function AppUI({
+  loading,
+  error,
   totalTodos,
   completedTodos,
   searchValue,
@@ -30,6 +32,12 @@ function AppUI({
         setSearchName={setSearchName}
       />
       <TodoList>
+        {/* Mostramos un mensaje en caso de que ocurra algún error */}
+        {error && <p>Desespérate, hubo un error...</p>}
+        {/* {/* Mostramos un mensaje de cargando, cuando la aplicación está cargandolo sdatos */}
+        {loading && <p>Estamos cargando, no desesperes...</p>}
+        {/* {/* Si terminó de cargar y no existen TODOs, se muestra un mensaje para crear el primer TODO */}
+        {!loading && !searchedTodos.length && <p>¡Crea tu primer TODO!</p>}
         {searchedTodos.map((todo) => (
           // para iterar listas es importante porporcionar un a key por elemento, recomendable escribir ID
           <TodoItem
