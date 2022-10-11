@@ -5,21 +5,51 @@ import { AppUI } from "./AppUI";
 // import logo from "./logo.svg";
 // import "./App.css";
 
-const defaultTodos = [
-  { text: "Desayunar", completed: true },
-  { text: "Ver TV", completed: false },
-  {
-    text: "Cenar",
-    completed: false,
-  },
-];
+// const defaultTodos = [
+//   { text: "Desayunar", completed: true },
+//   { text: "Ver TV", completed: false },
+//   {
+//     text: "Cenar",
+//     completed: false,
+//   },
+// ];
+
+// Custom Hook
+// Recibimos como parámetros el nombre y el estado inicial de nuestro item.
+function useLocalStorage(itemName, initialValue) {
+  // localStorage
+  // Guardamos nuestro item en una constante
+  const localStorageItem = localStorage.getItem(itemName);
+  let parsedItem;
+
+  // validar si existen datos en localStorage
+  if (!localStorageItem) {
+    // si no existen datos, crear un array inicial
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
+    // el estado por defecto será un array vacío
+    parsedItem = initialValue;
+  } else {
+    // si existen elementos, convertir a los datos de localStorage a array de JS
+    parsedItem = JSON.parse(localStorageItem);
+  }
+  // creamos el estado, el estado recibe el array de objetos
+  const [item, setItem] = React.useState(parsedItem);
+
+  // persistencia de datos en localStorage
+  const saveItem = (newTodos) => {
+    const stringifiedTodos = JSON.stringify(newTodos);
+    localStorage.setItem(itemName, stringifiedTodos);
+    setItem(newTodos);
+  };
+  return [item, saveItem];
+}
 
 // los componentes empiezan con mayúscula
 // La funciones de los componenten no reciben parametros, si no propiedades
 function App() {
-  // creamos el estado
+  // Desestructuramos los datos que retornamos de nuestro custom hook, y le pasamos los argumentos que necesitamos (nombre y estado inicial)
+  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
   const [searchValue, setSearchName] = React.useState("");
-  const [todos, setTodos] = React.useState(defaultTodos);
 
   // mostrar el total de TODOs
   const completedTodos = todos.filter((todo) => todo.completed === true).length;
@@ -50,7 +80,7 @@ function App() {
 
     // mandar al estado el nuevo array
 
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   // eliminar todo
@@ -64,7 +94,7 @@ function App() {
 
     // mandar al estado el nuevo array
 
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   return (
